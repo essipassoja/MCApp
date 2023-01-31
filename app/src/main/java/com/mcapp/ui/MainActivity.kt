@@ -1,12 +1,24 @@
 package com.mcapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.mcapp.R
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import com.mcapp.ui.login.Login
+import com.mcapp.ui.login.LoginViewModel
+import com.mcapp.ui.theme.MCAppTheme
+import org.koin.androidx.compose.get
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContent {
+            MCAppTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    Login(LoginViewModel(get()))
+                }
+            }
+        }
     }
 }

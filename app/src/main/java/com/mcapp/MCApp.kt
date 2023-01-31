@@ -1,22 +1,28 @@
 package com.mcapp
 
 import android.app.Application
+import com.mcapp.ui.loginModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import org.koin.core.module.Module
 
-class App : Application() {
+class MCApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // start Koin
+        // Start Koin
         startKoin {
-            //  declare used Android context
-            androidContext(this@App)
-            androidLogger(Level.INFO)
-            // declare modules
-//            modules(myModule)
+            // Android context
+            androidContext(this@MCApp)
+            // Modules
+            modules(getModules())
         }
+    }
+
+    private fun getModules(): List<Module> {
+        return listOf(
+            loginModule
+            // Add your Koin modules here
+        )
     }
 }
