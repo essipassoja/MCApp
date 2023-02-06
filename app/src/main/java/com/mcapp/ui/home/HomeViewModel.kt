@@ -3,12 +3,10 @@ package com.mcapp.ui.home
 import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,7 +32,6 @@ fun Home(viewModel: HomeViewModel, context: Context, isAuth: MutableState<Boolea
                 Text(text = "Reminder 1")
                 Text(text = "Reminder 2")
             }
-
         }
         Column(
             modifier = Modifier
@@ -44,10 +41,12 @@ fun Home(viewModel: HomeViewModel, context: Context, isAuth: MutableState<Boolea
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+        ChooseNewReminder(appStatus)
+        Spacer(modifier = Modifier.height(15.dp))
         Button(
             onClick = {
                 appStatus.logout(context, isAuth)
-                      },
+            },
             enabled = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -55,6 +54,42 @@ fun Home(viewModel: HomeViewModel, context: Context, isAuth: MutableState<Boolea
             shape = MaterialTheme.shapes.small
         ) {
             Text(text = "Log out")
+            }
+        }
+    }
+}
+
+@Composable
+fun ChooseNewReminder(appStatus: AppStatus){
+    var showMenu by remember { mutableStateOf(false) }
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp),
+        elevation = AppBarDefaults.TopAppBarElevation,
+        color = MaterialTheme.colors.primary
+    ) {
+        Row(modifier = Modifier) {
+            Text(text="Choose a new reminder", )
+            Box(modifier = Modifier.weight(0.5f)) {
+                IconButton(onClick = { showMenu = !showMenu }) {
+                    Icon(Icons.Default.MoreVert, "")
+                }
+            }
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false },
+            ) {
+                DropdownMenuItem(
+                    onClick = {
+                        appStatus.addNewReminder("New alarm 1") }) {
+                    Text("New alarm 1")
+                }
+                DropdownMenuItem(
+                    onClick = {
+                        appStatus.addNewReminder("New alarm 2") }) {
+                    Text("New alarm 2")
+                }
             }
         }
     }

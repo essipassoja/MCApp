@@ -27,6 +27,10 @@ class AppStatus {
         sharedPref.edit().putBoolean(KEY_AUTH, false).apply()
         println("LOGGED OUT")
         isAuth.value =  sharedPref.getBoolean(KEY_AUTH, false)
-        }
-
     }
+
+    fun addNewReminder(reminder: String) {
+        println("Trying to make new reminder: $reminder")
+    }
+}
+
