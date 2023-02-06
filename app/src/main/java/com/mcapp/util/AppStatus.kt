@@ -9,12 +9,14 @@ const val KEY_AUTH = "is_auth"
 
 class AppStatus {
     fun login(context: Context, username: String, password: String, isAuth: MutableState<Boolean>) {
-        val authenticated = (username == "test" && password == "pass")
+        val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+//        registerNewUser(context, "test", "password")  // debug
+        val authenticated = ((username == sharedPref.getString("username", username)) &&
+                (password == sharedPref.getString("password", password)))
+        println("Authenticated = $authenticated")  // debug
 
         if (authenticated) {
-            val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             sharedPref.edit().putBoolean(KEY_AUTH, true).apply()
-            println("Username and password are OK")
             isAuth.value =  sharedPref.getBoolean(KEY_AUTH, false)
         } else {
             Toast.makeText(
@@ -25,12 +27,20 @@ class AppStatus {
     fun logout(context: Context, isAuth: MutableState<Boolean>) {
         val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         sharedPref.edit().putBoolean(KEY_AUTH, false).apply()
-        println("LOGGED OUT")
+        println("LOGGED OUT")  // debug
         isAuth.value =  sharedPref.getBoolean(KEY_AUTH, false)
     }
 
     fun addNewReminder(reminder: String) {
         println("Trying to make new reminder: $reminder")
+    }
+
+    fun registerNewUser(context: Context, username: String, password: String) {
+        val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("username", username)
+        editor.putString("password", password)
+        editor.apply()
     }
 }
 
