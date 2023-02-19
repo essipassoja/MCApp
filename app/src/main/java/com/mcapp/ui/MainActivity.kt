@@ -16,6 +16,7 @@ import com.mcapp.ui.login.Login
 import com.mcapp.ui.theme.MCAppTheme
 import com.mcapp.util.KEY_AUTH
 import com.mcapp.util.PREFS_NAME
+import org.koin.androidx.compose.get
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val isAuth = rememberSaveable { mutableStateOf(sharedPref.getBoolean(KEY_AUTH, false)) }
 
         if (isAuth.value) {
-            Home(this, isAuth)
+            Home(get(), this, isAuth)
         } else {
             Login(this, isAuth)
         }

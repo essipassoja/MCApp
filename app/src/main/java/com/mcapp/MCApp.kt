@@ -3,7 +3,7 @@ package com.mcapp
 import android.app.Application
 import com.mcapp.util.appStatusModule
 import com.mcapp.util.databaseModule
-import com.mcapp.util.homeModule
+import com.mcapp.util.reminderModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -25,7 +25,7 @@ class MCApp : Application() {
 
     private fun getModules(): List<Module> {
         return listOf(
-            homeModule,
+            reminderModule,
             appStatusModule,
             databaseModule,
         )

@@ -31,10 +31,6 @@ class AppStatus {
         isAuth.value =  sharedPref.getBoolean(KEY_AUTH, false)
     }
 
-    fun addNewReminder(reminder: String) {
-        println("Trying to make new reminder: $reminder")
-    }
-
     fun registerNewUser(context: Context, username: String, password: String) {
         val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()

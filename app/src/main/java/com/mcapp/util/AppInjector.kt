@@ -2,15 +2,13 @@ package com.mcapp.util
 
 import androidx.room.Room
 import com.mcapp.data.room.MCDatabase
-import com.mcapp.data.room.ReminderDao
-import com.mcapp.data.room.ReminderDaoImpl
-import com.mcapp.ui.home.HomeViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import com.mcapp.data.room.ReminderDataSourceImpl
+import com.mcapp.ui.home.ReminderViewModel
 import org.koin.dsl.module
 
-val homeModule = module {
-    single { ReminderDaoImpl(get()) }
-    viewModel { HomeViewModel(get()) }
+val reminderModule = module {
+    single { ReminderViewModel(get()) }
+    single { ReminderDataSourceImpl(get()) }
 }
 
 val appStatusModule = module {
@@ -19,8 +17,8 @@ val appStatusModule = module {
 
 val databaseModule = module {
     single {
-        Room.databaseBuilder(get(), MCDatabase::class.java, "app_database")
+        Room.databaseBuilder(get(), MCDatabase::class.java, "mc_database")
             .build()
     }
-    single<ReminderDao> { ReminderDaoImpl(get()) }
+    single {get<MCDatabase>().reminderDao()}
 }
