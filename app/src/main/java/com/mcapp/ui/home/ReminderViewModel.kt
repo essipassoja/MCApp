@@ -3,14 +3,14 @@ package com.mcapp.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mcapp.data.entity.Reminder
-import com.mcapp.data.room.ReminderDataSourceImpl
+import com.mcapp.data.room.ReminderRepositoryImpl
 import com.mcapp.data.room.ReminderViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class ReminderViewModel(private val reminderDataSource: ReminderDataSourceImpl): ViewModel() {
+class ReminderViewModel(private val reminderDataSource: ReminderRepositoryImpl): ViewModel() {
     private val _viewReminders = MutableStateFlow<ReminderViewState>(ReminderViewState.Loading)
     val reminders: StateFlow<ReminderViewState> = _viewReminders
 
