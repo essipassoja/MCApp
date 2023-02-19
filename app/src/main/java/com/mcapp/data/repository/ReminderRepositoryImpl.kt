@@ -1,6 +1,7 @@
-package com.mcapp.data.room
+package com.mcapp.data.repository
 
 import com.mcapp.data.entity.Reminder
+import com.mcapp.data.datasource.ReminderDataSource
 import kotlinx.coroutines.flow.Flow
 
 class ReminderRepositoryImpl(private val reminderDataSource: ReminderDataSource):

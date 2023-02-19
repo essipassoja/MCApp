@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.mcapp.data.entity.Reminder
-import com.mcapp.data.room.ReminderViewState
+import com.mcapp.ui.reminder.ReminderViewState
+import com.mcapp.ui.reminder.ReminderViewModel
 import com.mcapp.util.AppStatus
 import org.koin.androidx.compose.get
 import java.time.LocalDateTime
@@ -90,13 +91,13 @@ private fun ReminderList(
     reminderViewModel: ReminderViewModel,
     it: PaddingValues
 ) {
-    println("Trying to get all reminders")
     reminderViewModel.getListOfAllReminders(0)
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
     when (reminderViewState) {
-        is ReminderViewState.Loading -> {}
+        is ReminderViewState.Loading -> {println("ReminderViewState = Loading")}
         is ReminderViewState.Success -> {
+            println("ReminderViewState = OK")
             val reminders = (reminderViewState as ReminderViewState.Success).data
             println("Found reminders: $reminders")  // debug
 

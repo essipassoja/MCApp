@@ -1,4 +1,4 @@
-package com.mcapp.data.room
+package com.mcapp.ui.reminder
 
 import com.mcapp.data.entity.Reminder
 

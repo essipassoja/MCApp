@@ -1,7 +1,8 @@
-package com.mcapp.data.room
+package com.mcapp.data.datasource
 
 import com.mcapp.data.entity.Reminder
 import com.mcapp.data.entity.ReminderEntity
+import com.mcapp.data.room.ReminderDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

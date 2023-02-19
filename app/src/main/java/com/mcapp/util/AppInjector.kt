@@ -2,10 +2,10 @@ package com.mcapp.util
 
 import androidx.room.Room
 import com.mcapp.data.room.MCDatabase
-import com.mcapp.data.room.ReminderDataSource
-import com.mcapp.data.room.ReminderDataSourceImpl
-import com.mcapp.data.room.ReminderRepositoryImpl
-import com.mcapp.ui.home.ReminderViewModel
+import com.mcapp.data.datasource.ReminderDataSource
+import com.mcapp.data.datasource.ReminderDataSourceImpl
+import com.mcapp.data.repository.ReminderRepositoryImpl
+import com.mcapp.ui.reminder.ReminderViewModel
 import org.koin.dsl.module
 
 val reminderModule = module {

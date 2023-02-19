@@ -1,10 +1,9 @@
-package com.mcapp.ui.home
+package com.mcapp.ui.reminder
 
-import com.mcapp.data.room.ReminderRepositoryImpl
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mcapp.data.entity.Reminder
-import com.mcapp.data.room.ReminderViewState
+import com.mcapp.data.repository.ReminderRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

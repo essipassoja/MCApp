@@ -1,4 +1,4 @@
-package com.mcapp.data.room
+package com.mcapp.data.datasource
 
 import com.mcapp.data.entity.Reminder
 import kotlinx.coroutines.flow.Flow
