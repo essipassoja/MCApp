@@ -1,7 +1,7 @@
 package com.mcapp.util
 
 import androidx.room.Room
-import com.mcapp.data.room.MCDatabase
+import com.mcapp.data.MCDatabase
 import com.mcapp.data.datasource.ReminderDataSource
 import com.mcapp.data.datasource.ReminderDataSourceImpl
 import com.mcapp.data.repository.ReminderRepositoryImpl

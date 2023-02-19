@@ -1,4 +1,4 @@
-package com.mcapp.data.room
+package com.mcapp.data
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.mcapp.data.entity.ReminderEntity
+import com.mcapp.data.room.ReminderDao
 import java.time.LocalDateTime
 
 @Database(
