@@ -87,7 +87,7 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
 @Composable
 private fun ReminderList(
     reminderViewModel: ReminderViewModel,
-    it: PaddingValues
+    paddingValues: PaddingValues
 ) {
     reminderViewModel.getListOfAllReminders(0)
 
@@ -100,7 +100,7 @@ private fun ReminderList(
             println("Found reminders: $reminders")  // debug
 
             LazyColumn(
-                contentPadding = PaddingValues(0.dp),
+                contentPadding = paddingValues,
                 verticalArrangement = Arrangement.Center
             ) {
                 items(reminders) { item ->
