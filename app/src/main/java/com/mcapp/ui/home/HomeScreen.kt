@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.mcapp.data.entity.Reminder
-import com.mcapp.ui.reminder.ReminderViewState
+import com.mcapp.ui.reminder.MakeNewReminder
 import com.mcapp.ui.reminder.ReminderViewModel
+import com.mcapp.ui.reminder.ReminderViewState
 import com.mcapp.util.AppStatus
 import org.koin.androidx.compose.get
-import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -210,57 +210,6 @@ private fun ReminderListItem(
                 imageVector = Icons.Filled.Check,
                 contentDescription = ""
             )
-        }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
-    val message = remember { mutableStateOf("") }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        OutlinedTextField(
-            value = message.value,
-            onValueChange = { message.value = it },
-            label = { Text(text = "Reminder message:") },
-            modifier = Modifier
-                .padding(all = 2.dp)
-                .fillMaxWidth()
-        )
-        Spacer(modifier = Modifier
-            .padding(2.dp)
-            .height(10.dp))
-
-        Spacer(modifier = Modifier
-            .padding(2.dp)
-            .height(10.dp))
-        Button(
-            onClick = {
-                    viewModel.insertOrUpdateReminder(
-                        Reminder(
-                            message = message.value,
-                            locationX = 0,
-                            locationY = 0,
-                            reminderTime = LocalDateTime.of(
-                                2023, 2, 15, 19, 29),
-                            creationTime = LocalDateTime.now(),
-                            creatorId = 0,
-                            reminderSeen = false
-                        )
-                    )
-                    onBack()
-            },
-            modifier = Modifier
-                .padding(0.dp)
-                .fillMaxWidth()
-                .size(55.dp)
-        ) {
-            Text("Save reminder")
         }
     }
 }
