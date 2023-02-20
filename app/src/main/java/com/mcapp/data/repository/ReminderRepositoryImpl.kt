@@ -1,10 +1,10 @@
 package com.mcapp.data.repository
 
-import com.mcapp.data.entity.Reminder
 import com.mcapp.data.datasource.ReminderDataSource
+import com.mcapp.data.entity.Reminder
 import kotlinx.coroutines.flow.Flow
 
-class ReminderRepositoryImpl(private val reminderDataSource: ReminderDataSource):
+class ReminderRepositoryImpl constructor(private val reminderDataSource: ReminderDataSource):
     ReminderRepository {
 
     override suspend fun insertOrUpdate(reminder: Reminder) {

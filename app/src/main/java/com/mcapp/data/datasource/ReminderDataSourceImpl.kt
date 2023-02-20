@@ -6,7 +6,7 @@ import com.mcapp.data.room.ReminderDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ReminderDataSourceImpl(private val reminderDao: ReminderDao) : ReminderDataSource {
+class ReminderDataSourceImpl constructor(private val reminderDao: ReminderDao) : ReminderDataSource {
 
     override suspend fun insertOrUpdate(reminder: Reminder) {
         reminderDao.insertOrUpdate(reminder.toEntity())
