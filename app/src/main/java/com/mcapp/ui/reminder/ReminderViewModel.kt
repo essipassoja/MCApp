@@ -15,6 +15,7 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository): Vie
 
     fun insertOrUpdateReminder(reminder: Reminder) {
         viewModelScope.launch { reminderRepository.insertOrUpdate(reminder) }
+//        _viewReminders.value = ReminderViewState.Success(listOf(reminder))  // Debug
     }
 
     // TODO make a notification for new reminder successfully made
