@@ -65,5 +65,27 @@ fun EditReminderScreen(viewModel: ReminderViewModel, reminder: Reminder, onBack:
         ) {
             Text("Save changes")
         }
+        Spacer(modifier = Modifier
+            .padding(2.dp)
+            .height(10.dp))
+
+        Spacer(modifier = Modifier
+            .padding(2.dp)
+            .height(10.dp))
+        Button(
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(199, 50, 19, 255),
+                contentColor = Color(255, 255, 255)),
+            onClick = {
+                viewModel.deleteReminder(reminder)
+                onBack()
+            },
+            modifier = Modifier
+                .padding(0.dp)
+                .width(150.dp)
+                .size(50.dp)
+        ) {
+            Text("Delete reminder")
+        }
     }
 }
