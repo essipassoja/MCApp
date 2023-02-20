@@ -22,6 +22,7 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository): Vie
 
     fun deleteReminder(reminder: Reminder) {
         viewModelScope.launch { reminderRepository.delete(reminder) }
+//        _viewReminders.value = ReminderViewState.Loading  // debug
     }
 
     fun getListOfAllReminders(creatorId: Long) {
