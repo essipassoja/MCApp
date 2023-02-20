@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
-import com.mcapp.ui.reminder.EditReminderScreen
+import com.mcapp.ui.reminder.EditOrDeleteReminder
 import com.mcapp.ui.reminder.MakeNewReminder
 import com.mcapp.ui.reminder.ReminderViewModel
 import com.mcapp.ui.reminder.ReminderViewState
@@ -93,9 +93,9 @@ private fun ReminderList(
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
     when (reminderViewState) {
-        is ReminderViewState.Loading -> {println("ReminderViewState = Loading")}
+        is ReminderViewState.Loading -> {println("ReminderViewState = Loading")}  // Debug
         is ReminderViewState.Success -> {
-            println("ReminderViewState = OK")
+            println("ReminderViewState = OK")  // debug
             val reminders = (reminderViewState as ReminderViewState.Success).data
             println("Found reminders: $reminders")  // debug
 
@@ -137,7 +137,7 @@ private fun ReminderListItem(
     }
 
     if (isEditingReminder) {
-        EditReminderScreen(
+        EditOrDeleteReminder(
             viewModel = viewModel,
             reminder = reminder,
             onBack = { isEditingReminder = false }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun EditReminderScreen(viewModel: ReminderViewModel, reminder: Reminder, onBack: () -> Unit) {
+fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBack: () -> Unit) {
     val message = remember { mutableStateOf(reminder.message) }
 
     Column(
