@@ -9,23 +9,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class ReminderViewModel(private val reminderRepository: ReminderRepositoryImpl): ViewModel() {
+class ReminderViewModel(private val reminderRepositoryImpl: ReminderRepositoryImpl): ViewModel() {
     private val _viewReminders = MutableStateFlow<ReminderViewState>(ReminderViewState.Loading)
     val reminders: StateFlow<ReminderViewState> = _viewReminders
 
     fun insertOrUpdateReminder(reminder: Reminder) {
-        viewModelScope.launch { reminderRepository.insertOrUpdate(reminder) }
+        viewModelScope.launch { reminderRepositoryImpl.insertOrUpdate(reminder) }
     }
 
     // TODO make a notification for new reminder successfully made
 
     fun deleteReminder(reminder: Reminder) {
-        viewModelScope.launch { reminderRepository.delete(reminder) }
+        viewModelScope.launch { reminderRepositoryImpl.delete(reminder) }
     }
 
     fun getListOfAllReminders(creatorId: Long) {
         viewModelScope.launch {
-            reminderRepository.getAllReminders(creatorId).map {
+            reminderRepositoryImpl.getAllReminders(creatorId).map {
                 _viewReminders.value = ReminderViewState.Success(it)
             } }
     }
