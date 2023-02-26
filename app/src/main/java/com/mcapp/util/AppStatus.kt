@@ -11,6 +11,7 @@ class AppStatus {
     fun login(context: Context, username: String, password: String, isAuth: MutableState<Boolean>) {
         val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 //        registerNewUser(context, "test", "password")  // debug
+//        registerNewUser(context, "test2", "pwd")  // debug
         val authenticated = ((username == sharedPref.getString("username", username)) &&
                 (password == sharedPref.getString("password", password)))
         println("Authenticated = $authenticated")  // debug
