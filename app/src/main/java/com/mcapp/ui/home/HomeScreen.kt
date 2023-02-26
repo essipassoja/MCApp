@@ -20,6 +20,7 @@ import com.mcapp.ui.reminder.MakeNewReminder
 import com.mcapp.ui.reminder.ReminderViewModel
 import com.mcapp.ui.reminder.ReminderViewState
 import com.mcapp.util.AppStatus
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.get
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -28,12 +29,17 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
     val appStatus: AppStatus = get()
     val creatorId: Long = 0
     var isMakingNewReminder by remember { mutableStateOf(false) }
+    val reminderUpdated = remember { mutableStateOf(false) }
+    LaunchedEffect(reminderUpdated.value) {
+        reminderViewModel.getListOfAllReminders(creatorId)
+    }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    isMakingNewReminder = true },
+                    isMakingNewReminder = true
+                    reminderUpdated.value = true},
                 contentColor = Color.Blue,
                 modifier = Modifier.padding(all = 20.dp)
             ) {
@@ -49,7 +55,8 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
         if (isMakingNewReminder) {
             MakeNewReminder(
                 viewModel = reminderViewModel,
-                onBack = { isMakingNewReminder = false }
+                onBack = { isMakingNewReminder = false
+                           reminderUpdated.value = false}
             )
         } else {
             Column(
@@ -63,7 +70,8 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                 ReminderList(
                     reminderViewModel,
                     it,
-                    creatorId)
+                    creatorId,
+                    reminderUpdated)
                 Spacer(modifier = Modifier
                     .padding(bottom = 20.dp)
                     .height(10.dp))
@@ -93,8 +101,9 @@ private fun ReminderList(
     reminderViewModel: ReminderViewModel,
     paddingValues: PaddingValues,
     creatorId: Long,
+    reminderUpdated: MutableState<Boolean>
 ) {
-    reminderViewModel.getListOfAllReminders(creatorId)
+//    reminderViewModel.getListOfAllReminders(creatorId)
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
     when (reminderViewState) {
@@ -111,6 +120,7 @@ private fun ReminderList(
                     ReminderListItem(
                         reminder = item,
                         viewModel = reminderViewModel,
+                        reminderUpdated = reminderUpdated,
                     )
                 }
             }
@@ -123,6 +133,7 @@ private fun ReminderList(
 private fun ReminderListItem(
     reminder: Reminder,
     viewModel: ReminderViewModel,
+    reminderUpdated: MutableState<Boolean>
 ) {
     var isEditingReminder by remember { mutableStateOf(false) }
 
@@ -143,7 +154,10 @@ private fun ReminderListItem(
         EditOrDeleteReminder(
             viewModel = viewModel,
             reminder = reminder,
-            onBack = { isEditingReminder = false }
+            onBack = {
+                isEditingReminder = false
+                reminderUpdated.value = !reminderUpdated.value
+            }
         )
     }
 }
