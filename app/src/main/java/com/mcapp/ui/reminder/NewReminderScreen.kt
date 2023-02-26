@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
@@ -15,6 +16,9 @@ fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
     val reminderTime = remember { mutableStateOf(LocalDateTime.now()) }
     var isChoosingDate by remember { mutableStateOf(false) }
     var isChoosingTime by remember { mutableStateOf(false) }
+
+    val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     if (isChoosingDate) {
         DatePickerDialog(
@@ -58,21 +62,21 @@ fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
                     .padding(2.dp)
                     .height(10.dp)
             )
-            Button(
+            TextButton(
                 onClick = {
                     isChoosingDate = true
                 },
                 modifier = Modifier.padding(2.dp)
             ) {
-                Text(text = "Select date")
+                Text(text = reminderTime.value.format(dateFormatter))
             }
-            Button(
+            TextButton(
                 onClick = {
                     isChoosingTime = true
                 },
                 modifier = Modifier.padding(2.dp)
             ) {
-                Text(text = "Select time")
+                Text(text = reminderTime.value.format(timeFormatter))
             }
             Spacer(
                 modifier = Modifier
