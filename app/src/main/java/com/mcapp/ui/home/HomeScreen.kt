@@ -26,6 +26,7 @@ import org.koin.androidx.compose.get
 @Composable
 fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: MutableState<Boolean>) {
     val appStatus: AppStatus = get()
+    val creatorId: Long = 0
     var isMakingNewReminder by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -59,7 +60,10 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                ReminderList(reminderViewModel, it)
+                ReminderList(
+                    reminderViewModel,
+                    it,
+                    creatorId)
                 Spacer(modifier = Modifier
                     .padding(bottom = 20.dp)
                     .height(10.dp))
@@ -87,9 +91,10 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
 @Composable
 private fun ReminderList(
     reminderViewModel: ReminderViewModel,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    creatorId: Long,
 ) {
-    reminderViewModel.getListOfAllReminders(0)
+    reminderViewModel.getListOfAllReminders(creatorId)
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
     when (reminderViewState) {
