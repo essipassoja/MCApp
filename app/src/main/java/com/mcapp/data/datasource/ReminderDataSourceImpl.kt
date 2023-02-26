@@ -26,6 +26,7 @@ class ReminderDataSourceImpl constructor(private val reminderDao: ReminderDao) :
 
     private fun Reminder.toEntity(): ReminderEntity {
         return ReminderEntity(
+            reminderId = reminderId,
             message = message,
             locationX = locationX,
             locationY = locationY,
@@ -38,6 +39,7 @@ class ReminderDataSourceImpl constructor(private val reminderDao: ReminderDao) :
 
     private fun ReminderEntity.fromEntity(): Reminder {
         return Reminder(
+            reminderId = reminderId,
             message = message,
             locationX = locationX,
             locationY = locationY,

@@ -26,7 +26,7 @@ fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBac
     ) {
         OutlinedTextField(
             value = message.value,
-            onValueChange = { message.value = it },
+            onValueChange = { text -> message.value = text },
             label = { Text(text = "Reminder message:") },
             modifier = Modifier
                 .padding(all = 2.dp)
@@ -46,6 +46,7 @@ fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBac
             onClick = {
                 viewModel.insertOrUpdateReminder(
                     Reminder(
+                        reminderId = reminder.reminderId,
                         message = message.value,
                         locationX = 0,
                         locationY = 0,
@@ -57,7 +58,7 @@ fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBac
                     )
                 )
                 onBack()
-                      },
+            },
             modifier = Modifier
                 .padding(0.dp)
                 .fillMaxWidth()

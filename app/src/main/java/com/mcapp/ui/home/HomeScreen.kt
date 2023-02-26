@@ -93,9 +93,8 @@ private fun ReminderList(
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
     when (reminderViewState) {
-        is ReminderViewState.Loading -> {println("ReminderViewState = Loading")}  // Debug
+        is ReminderViewState.Loading -> {}
         is ReminderViewState.Success -> {
-            println("ReminderViewState = OK")  // debug
             val reminderList = (reminderViewState as ReminderViewState.Success).data
             println("Found reminders: $reminderList")  // debug
 
@@ -128,7 +127,7 @@ private fun ReminderListItem(
             contentColor = Color(255, 255, 255)),
         onClick = { isEditingReminder = true },
         modifier = Modifier
-            .padding(0.dp)
+            .padding(10.dp)
             .fillMaxWidth()
             .size(55.dp)
     ) {

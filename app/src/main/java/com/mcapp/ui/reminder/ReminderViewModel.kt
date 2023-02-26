@@ -14,21 +14,24 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository): Vie
     val reminders: StateFlow<ReminderViewState> = _viewReminders
 
     fun insertOrUpdateReminder(reminder: Reminder) {
-        viewModelScope.launch { reminderRepository.insertOrUpdate(reminder) }
-//        _viewReminders.value = ReminderViewState.Success(listOf(reminder))  // Debug
+        viewModelScope.launch {
+            reminderRepository.insertOrUpdate(reminder)
+        }
     }
 
     // TODO make a notification for new reminder successfully made
 
     fun deleteReminder(reminder: Reminder) {
-        viewModelScope.launch { reminderRepository.delete(reminder) }
-//        _viewReminders.value = ReminderViewState.Loading  // debug
+        viewModelScope.launch {
+            reminderRepository.delete(reminder)
+        }
     }
 
     fun getListOfAllReminders(creatorId: Long) {
         viewModelScope.launch {
             reminderRepository.getAllReminders(creatorId).collect {
                 _viewReminders.value = ReminderViewState.Success(it)
-            } }
+            }
+        }
     }
 }
