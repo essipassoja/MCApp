@@ -47,6 +47,7 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                 verticalArrangement = Arrangement.Center
             ) {
                 ReminderList(
+                    context,
                     reminderViewModel,
                     reminderUpdated
                 )
@@ -91,6 +92,7 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
 
 @Composable
 private fun ReminderList(
+    context: Context,
     reminderViewModel: ReminderViewModel,
     reminderUpdated: MutableState<Boolean>
 ) {
@@ -110,6 +112,7 @@ private fun ReminderList(
                     ReminderListItem(
                         reminder = item,
                         viewModel = reminderViewModel,
+                        context = context,
                         reminderUpdated = reminderUpdated,
                     )
                 }
@@ -122,6 +125,7 @@ private fun ReminderList(
 private fun ReminderListItem(
     reminder: Reminder,
     viewModel: ReminderViewModel,
+    context: Context,
     reminderUpdated: MutableState<Boolean>
 ) {
     var isEditingReminder by remember { mutableStateOf(false) }
@@ -142,6 +146,7 @@ private fun ReminderListItem(
     if (isEditingReminder) {
         EditOrDeleteReminder(
             viewModel = viewModel,
+            context = context,
             reminder = reminder,
             onBack = {
                 isEditingReminder = false
