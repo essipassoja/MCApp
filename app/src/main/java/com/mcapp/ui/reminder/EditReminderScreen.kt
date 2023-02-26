@@ -49,9 +49,9 @@ fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBac
                         message = message.value,
                         locationX = 0,
                         locationY = 0,
-                        reminderTime = LocalDateTime.of(
-                            2023, 2, 15, 19, 29),
-                        creationTime = reminder.creationTime,
+//                        reminderTime = LocalDateTime.of(
+//                            2023, 2, 15, 19, 29),
+//                        creationTime = reminder.creationTime,
                         creatorId = reminder.creatorId,
                         reminderSeen = false
                     )

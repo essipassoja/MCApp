@@ -96,15 +96,14 @@ private fun ReminderList(
         is ReminderViewState.Loading -> {println("ReminderViewState = Loading")}  // Debug
         is ReminderViewState.Success -> {
             println("ReminderViewState = OK")  // debug
-            val reminders = (reminderViewState as ReminderViewState.Success).data
-            println("Found reminders: $reminders")  // debug
+            val reminderList = (reminderViewState as ReminderViewState.Success).data
+            println("Found reminders: $reminderList")  // debug
 
             LazyColumn(
                 contentPadding = paddingValues,
                 verticalArrangement = Arrangement.Center
             ) {
-                items(reminders) { item ->
-                    println("Found reminder: " + item.message)  // debug
+                items(reminderList) { item ->
                     ReminderListItem(
                         reminder = item,
                         viewModel = reminderViewModel,

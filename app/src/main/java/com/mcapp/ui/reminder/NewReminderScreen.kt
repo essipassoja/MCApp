@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.room.Room
 import com.mcapp.data.entity.Reminder
 import java.time.LocalDateTime
 
@@ -47,11 +48,11 @@ fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
                         message = message.value,
                         locationX = 0,
                         locationY = 0,
-                        reminderTime = LocalDateTime.of(
-                            2023, 2, 15, 19, 29),
-                        creationTime = LocalDateTime.now(),
+//                        reminderTime = LocalDateTime.of(
+//                            2023, 2, 15, 19, 29),
+//                        creationTime = LocalDateTime.now(),
                         creatorId = 0,
-                        reminderSeen = false
+                        reminderSeen = false,
                     )
                 )
                 onBack()

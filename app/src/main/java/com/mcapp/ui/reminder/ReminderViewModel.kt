@@ -27,7 +27,7 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository): Vie
 
     fun getListOfAllReminders(creatorId: Long) {
         viewModelScope.launch {
-            reminderRepository.getAllReminders(creatorId).map {
+            reminderRepository.getAllReminders(creatorId).collect {
                 _viewReminders.value = ReminderViewState.Success(it)
             } }
     }
