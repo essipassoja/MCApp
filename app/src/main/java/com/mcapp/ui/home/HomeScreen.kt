@@ -30,31 +30,14 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
         reminderViewModel.getListOfAllReminders(creatorId)
     }
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    isMakingNewReminder = true
-                    reminderUpdated.value = true},
-                contentColor = Color.Blue,
-                modifier = Modifier.padding(all = 20.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                    modifier = Modifier.padding(all = 5.dp)
-                )
-            }
-        },
-        floatingActionButtonPosition = FabPosition.Center
-    ) {
-        if (isMakingNewReminder) {
-            MakeNewReminder(
-                viewModel = reminderViewModel,
-                onBack = { isMakingNewReminder = false
-                           reminderUpdated.value = false}
-            )
-        } else {
+    if (isMakingNewReminder) {
+        MakeNewReminder(
+            viewModel = reminderViewModel,
+            onBack = { isMakingNewReminder = false
+                       reminderUpdated.value = false}
+        )
+    } else {
+        Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,8 +48,8 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
             ) {
                 ReminderList(
                     reminderViewModel,
-                    it,
-                    reminderUpdated)
+                    reminderUpdated
+                )
                 Spacer(modifier = Modifier
                     .padding(bottom = 20.dp)
                     .height(10.dp))
@@ -86,6 +69,22 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                     Text(text = "Log out")
                 }
             }
+
+            FloatingActionButton(
+                onClick = {
+                    isMakingNewReminder = true
+                    reminderUpdated.value = true},
+                contentColor = Color.Blue,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    modifier = Modifier.padding(all = 5.dp)
+                )
+            }
         }
     }
 }
@@ -93,7 +92,6 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
 @Composable
 private fun ReminderList(
     reminderViewModel: ReminderViewModel,
-    paddingValues: PaddingValues,
     reminderUpdated: MutableState<Boolean>
 ) {
 
@@ -105,7 +103,7 @@ private fun ReminderList(
             println("Found reminders: $reminderList")  // debug
 
             LazyColumn(
-                contentPadding = paddingValues,
+                contentPadding = PaddingValues(),
                 verticalArrangement = Arrangement.Center
             ) {
                 items(reminderList) { item ->
