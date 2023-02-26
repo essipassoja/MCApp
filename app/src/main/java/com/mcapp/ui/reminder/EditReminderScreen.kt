@@ -40,7 +40,7 @@ fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBac
         )
     } else {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.padding(16.dp)
         ) {
