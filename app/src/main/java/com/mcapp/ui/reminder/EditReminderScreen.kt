@@ -1,7 +1,5 @@
 package com.mcapp.ui.reminder
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -14,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
 import java.time.LocalDateTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBack: () -> Unit) {
     val message = remember { mutableStateOf(reminder.message) }
@@ -50,9 +47,9 @@ fun EditOrDeleteReminder(viewModel: ReminderViewModel, reminder: Reminder, onBac
                         message = message.value,
                         locationX = 0,
                         locationY = 0,
-//                        reminderTime = LocalDateTime.of(
-//                            2023, 2, 15, 19, 29),
-//                        creationTime = reminder.creationTime,
+                        reminderTime = LocalDateTime.of(
+                            2023, 2, 26, 17, 30),
+                        creationTime = reminder.creationTime,
                         creatorId = reminder.creatorId,
                         reminderSeen = false
                     )

@@ -1,7 +1,5 @@
 package com.mcapp.ui.reminder
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
@@ -12,11 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.room.Room
 import com.mcapp.data.entity.Reminder
 import java.time.LocalDateTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
     val message = remember { mutableStateOf("") }
@@ -28,7 +24,7 @@ fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
     ) {
         OutlinedTextField(
             value = message.value,
-            onValueChange = { message.value = it },
+            onValueChange = { text -> message.value = text },
             label = { Text(text = "Reminder message:") },
             modifier = Modifier
                 .padding(all = 2.dp)
@@ -48,9 +44,8 @@ fun MakeNewReminder(viewModel: ReminderViewModel, onBack: () -> Unit) {
                         message = message.value,
                         locationX = 0,
                         locationY = 0,
-//                        reminderTime = LocalDateTime.of(
-//                            2023, 2, 15, 19, 29),
-//                        creationTime = LocalDateTime.now(),
+                        reminderTime = LocalDateTime.now(),
+                        creationTime = LocalDateTime.now(),
                         creatorId = 0,
                         reminderSeen = false,
                     )

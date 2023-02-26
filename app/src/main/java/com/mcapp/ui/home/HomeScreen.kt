@@ -1,8 +1,6 @@
 package com.mcapp.ui.home
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,10 +18,8 @@ import com.mcapp.ui.reminder.MakeNewReminder
 import com.mcapp.ui.reminder.ReminderViewModel
 import com.mcapp.ui.reminder.ReminderViewState
 import com.mcapp.util.AppStatus
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.get
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: MutableState<Boolean>) {
     val appStatus: AppStatus = get()
@@ -70,7 +66,6 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                 ReminderList(
                     reminderViewModel,
                     it,
-                    creatorId,
                     reminderUpdated)
                 Spacer(modifier = Modifier
                     .padding(bottom = 20.dp)
@@ -95,15 +90,12 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun ReminderList(
     reminderViewModel: ReminderViewModel,
     paddingValues: PaddingValues,
-    creatorId: Long,
     reminderUpdated: MutableState<Boolean>
 ) {
-//    reminderViewModel.getListOfAllReminders(creatorId)
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
     when (reminderViewState) {
@@ -128,7 +120,6 @@ private fun ReminderList(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun ReminderListItem(
     reminder: Reminder,

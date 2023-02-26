@@ -1,7 +1,5 @@
 package com.mcapp.data
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
@@ -19,7 +17,6 @@ abstract class MCDatabase : RoomDatabase() {
 }
 
 class LocalDateTimeConverter {
-    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun toLocalDateTime(date: String): LocalDateTime = LocalDateTime.parse(date)
 
