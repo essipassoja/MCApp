@@ -89,20 +89,19 @@ fun MakeNewReminder(
                     .padding(2.dp)
                     .height(10.dp)
             )
+            val newReminder = Reminder(
+                message = message.value,
+                locationX = 0,
+                locationY = 0,
+                reminderTime = reminderTime.value,
+                creationTime = LocalDateTime.now(),
+                creatorId = 0,
+                reminderSeen = false,
+            )
             Button(
                 onClick = {
-                    viewModel.insertOrUpdateReminder(
-                        Reminder(
-                            message = message.value,
-                            locationX = 0,
-                            locationY = 0,
-                            reminderTime = reminderTime.value,
-                            creationTime = LocalDateTime.now(),
-                            creatorId = 0,
-                            reminderSeen = false,
-                        )
-                    )
-                    makeReminderRequest(reminderTime.value, context)
+                    viewModel.insertOrUpdateReminder(newReminder)
+                    makeReminderRequest(context, newReminder)
                     onBack()
                 },
                 modifier = Modifier

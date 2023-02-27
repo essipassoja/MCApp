@@ -86,25 +86,24 @@ fun EditOrDeleteReminder(
                     .padding(2.dp)
                     .height(10.dp)
             )
+            val editedReminder = Reminder(
+                reminderId = reminder.reminderId,
+                message = message.value,
+                locationX = 0,
+                locationY = 0,
+                reminderTime = reminderTime.value,
+                creationTime = reminder.creationTime,
+                creatorId = reminder.creatorId,
+                reminderSeen = false
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(199, 156, 199, 255),
                     contentColor = Color(255, 255, 255)
                 ),
                 onClick = {
-                    viewModel.insertOrUpdateReminder(
-                        Reminder(
-                            reminderId = reminder.reminderId,
-                            message = message.value,
-                            locationX = 0,
-                            locationY = 0,
-                            reminderTime = reminderTime.value,
-                            creationTime = reminder.creationTime,
-                            creatorId = reminder.creatorId,
-                            reminderSeen = false
-                        )
-                    )
-                    makeReminderRequest(reminderTime.value, context)
+                    viewModel.insertOrUpdateReminder(editedReminder)
+                    makeReminderRequest(context, editedReminder)
                     onBack()
                 },
                 modifier = Modifier
