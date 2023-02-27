@@ -1,5 +1,6 @@
 package com.mcapp.util
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -10,7 +11,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.mcapp.R
 import com.mcapp.data.entity.Reminder
 import java.time.ZoneId
 import java.util.*
@@ -46,6 +46,7 @@ fun makeReminderRequest(
     WorkManager.getInstance(context).enqueue(reminderRequest)
 }
 
+@SuppressLint("LaunchActivityFromNotification", "UnspecifiedImmutableFlag")
 fun createNotification(context: Context, reminder: Reminder) {
     val channelId = "default_channel_id"
     val channelName = "Default Channel"
@@ -67,7 +68,7 @@ fun createNotification(context: Context, reminder: Reminder) {
 
     // Create the notification
     val builder = NotificationCompat.Builder(context, channelId)
-        .setSmallIcon(R.drawable.ic_launcher_background)
+        .setSmallIcon(android.R.drawable.btn_star_big_on)
         .setContentTitle("MCApp")
         .setContentText(reminder.message)
         .setContentIntent(pendingIntent)
