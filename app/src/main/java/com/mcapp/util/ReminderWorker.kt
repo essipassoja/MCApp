@@ -24,14 +24,15 @@ class ReminderWorker(
 
     override fun doWork(): Result {
         val viewModel = getKoin().get<ReminderViewModel>()
-        val reminderId = inputData.getLong("reminderId", -1)
+        val reminderId = inputData.getLong("reminderId", 0)
+        val notificationId = inputData.getInt("notificationId", -1)
 
         Log.d("WORKER REMINDER ID", "$reminderId")
 
-        if (reminderId != -1L) {
+        if (reminderId != 0L && notificationId != -1) {
             viewModel.getReminder(reminderId) { reminder ->
                 reminder?.let {
-                    createNotification(applicationContext, reminder)
+                    createNotification(applicationContext, reminder, notificationId)
                 }
             }
         }
@@ -42,13 +43,13 @@ class ReminderWorker(
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("INSIDE FUN", "Inside onReceive!")
-        val reminderId = intent?.getLongExtra("reminderId", -1) ?: -1
+        val reminderId = intent?.getLongExtra("reminderId", 0) ?: 0
         val notificationId = intent?.getIntExtra("notificationId", -1) ?: -1
 
         Log.d("REMINDER ID", "$reminderId")
         Log.d("NOTIFICATION ID", "$notificationId")
 
-        if (reminderId != -1L && notificationId != -1) {
+        if (reminderId != 0L && notificationId != -1) {
             val viewModel = getKoin().get<ReminderViewModel>()
             viewModel.getReminder(reminderId) { reminder ->
                 reminder?.let {
@@ -87,10 +88,12 @@ fun makeReminderRequest(
     val now = Calendar.getInstance().timeInMillis
     val delay = reminderTimeInMillis - now
 
+    val notificationId: Int = Random().nextInt()
+
     val reminderRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
         .setInputData(Data.Builder()
             .putLong("reminderId", reminder.reminderId)
-            .putInt("notificationId", reminder.reminderId.toInt())
+            .putInt("notificationId", notificationId)
             .build()
         )
         .setInitialDelay(delay, TimeUnit.MILLISECONDS)
@@ -100,7 +103,7 @@ fun makeReminderRequest(
 }
 
 @SuppressLint("LaunchActivityFromNotification", "UnspecifiedImmutableFlag")
-fun createNotification(context: Context, reminder: Reminder) {
+fun createNotification(context: Context, reminder: Reminder, notificationId: Int) {
     val channelId = "default_channel_id"
     val channelName = "Default Channel"
     val importance = NotificationManager.IMPORTANCE_HIGH
@@ -116,7 +119,7 @@ fun createNotification(context: Context, reminder: Reminder) {
     // Create an intent that will be triggered when the user taps on the notification
     val intent = Intent(context, NotificationReceiver::class.java).apply {
         putExtra("reminderId", reminder.reminderId)
-        putExtra("notificationId", reminder.reminderId.toInt())
+        putExtra("notificationId", notificationId)
     }
     val pendingIntent = PendingIntent.getBroadcast(
         context, reminder.reminderId.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT
@@ -131,5 +134,5 @@ fun createNotification(context: Context, reminder: Reminder) {
         .setAutoCancel(true)
 
     // Show the notification
-    notificationManager.notify(reminder.reminderId.toInt(), builder.build())
+    notificationManager.notify(notificationId, builder.build())
 }
