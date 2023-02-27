@@ -6,7 +6,7 @@ import com.mcapp.data.entity.Reminder
 import com.mcapp.data.repository.ReminderRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class ReminderViewModel(private val reminderRepository: ReminderRepository): ViewModel() {
@@ -32,6 +32,13 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository): Vie
             reminderRepository.getAllReminders(creatorId).collect {
                 _viewReminders.value = ReminderViewState.Success(it)
             }
+        }
+    }
+
+    fun getReminder(reminderId: Long, callback: (Reminder?) -> Unit) {
+        viewModelScope.launch {
+            val reminder = reminderRepository.getReminder(reminderId).firstOrNull()
+            callback(reminder)
         }
     }
 }

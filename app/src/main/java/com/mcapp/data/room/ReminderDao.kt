@@ -11,6 +11,9 @@ interface ReminderDao {
     @Query("SELECT * FROM reminders WHERE creatorId LIKE :creatorId")
     suspend fun getAllReminders(creatorId: Long): List<ReminderEntity>
 
+    @Query("SELECT * FROM reminders WHERE reminderId LIKE :reminderId")
+    suspend fun getReminder(reminderId: Long): ReminderEntity
+
     @Delete
     suspend fun delete(reminder: ReminderEntity)
 

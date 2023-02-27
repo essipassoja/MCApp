@@ -10,5 +10,5 @@ data class Reminder(
     val reminderTime: LocalDateTime,
     val creationTime: LocalDateTime,
     val creatorId: Long,
-    val reminderSeen: Boolean,
+    var reminderSeen: Boolean,
     )
