@@ -24,6 +24,10 @@ class ReminderDataSourceImpl constructor(private val reminderDao: ReminderDao) :
         emit(reminderDao.getReminder(reminderId).fromEntity())
     }
 
+    override suspend fun getNewestReminder(): Flow<Reminder> = flow {
+        emit(reminderDao.getNewestReminder().fromEntity())
+    }
+
     override suspend fun delete(reminder: Reminder) {
         reminderDao.delete(reminder.toEntity())
     }

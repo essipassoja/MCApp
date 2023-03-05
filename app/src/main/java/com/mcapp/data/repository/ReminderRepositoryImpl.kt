@@ -19,6 +19,10 @@ class ReminderRepositoryImpl constructor(private val reminderDataSource: Reminde
         return reminderDataSource.getReminder(reminderId)
     }
 
+    override suspend fun getNewestReminder(): Flow<Reminder> {
+        return reminderDataSource.getNewestReminder()
+    }
+
     override suspend fun delete(reminder: Reminder) {
         reminderDataSource.delete(reminder)
     }

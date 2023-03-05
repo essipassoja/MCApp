@@ -33,11 +33,10 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
     if (isMakingNewReminder) {
         MakeNewReminder(
             viewModel = reminderViewModel,
+            context = context,
             onBack = { isMakingNewReminder = false
                        reminderUpdated.value = false}
         )
-        // val newReminder = GetNewestReminder
-        // makeReminderRequest(context, newReminder)
     } else {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(

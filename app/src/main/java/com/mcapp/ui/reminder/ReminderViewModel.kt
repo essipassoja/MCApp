@@ -41,4 +41,11 @@ class ReminderViewModel(private val reminderRepository: ReminderRepository): Vie
             callback(reminder)
         }
     }
+
+    fun getNewestReminder(callback: (Reminder?) -> Unit) {
+        viewModelScope.launch {
+            val reminder = reminderRepository.getNewestReminder().firstOrNull()
+            callback(reminder)
+        }
+    }
 }

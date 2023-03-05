@@ -1,5 +1,7 @@
 package com.mcapp.ui.reminder
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -7,12 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
+import com.mcapp.util.makeReminderRequest
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun MakeNewReminder(
     viewModel: ReminderViewModel,
+    context: Context,
     onBack: () -> Unit) {
 
     val message = remember { mutableStateOf("") }
@@ -98,6 +102,12 @@ fun MakeNewReminder(
             Button(
                 onClick = {
                     viewModel.insertOrUpdateReminder(newReminder)
+                    viewModel.getNewestReminder() { newReminder ->
+                        newReminder?.let {
+                            makeReminderRequest(context, newReminder)
+                            Log.d("NEW REMINDER", "Making notification for the reminder $newReminder")
+                        }
+                    }
                     onBack()
                 },
                 modifier = Modifier
