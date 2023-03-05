@@ -102,10 +102,10 @@ fun MakeNewReminder(
             Button(
                 onClick = {
                     viewModel.insertOrUpdateReminder(newReminder)
-                    viewModel.getNewestReminder() { newReminder ->
-                        newReminder?.let {
-                            makeReminderRequest(context, newReminder)
-                            Log.d("NEW REMINDER", "Making notification for the reminder $newReminder")
+                    viewModel.getNewestReminder() { reminder ->
+                        reminder?.let {
+                            makeReminderRequest(context, reminder)
+                            Log.d("NEW REMINDER", "Making notification for the reminder $reminder")
                         }
                     }
                     onBack()
