@@ -1,6 +1,7 @@
 package com.mcapp.ui.home
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,11 +20,13 @@ import com.mcapp.ui.reminder.ReminderViewModel
 import com.mcapp.ui.reminder.ReminderViewState
 import com.mcapp.util.AppStatus
 import org.koin.androidx.compose.get
+import java.time.LocalDateTime
 
 @Composable
 fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: MutableState<Boolean>) {
     val appStatus: AppStatus = get()
     val creatorId: Long = 0
+    val showAllReminders by remember { mutableStateOf(false) }
     var isMakingNewReminder by remember { mutableStateOf(false) }
     val reminderUpdated = remember { mutableStateOf(false) }
     LaunchedEffect(reminderUpdated.value) {
@@ -50,7 +53,8 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                 ReminderList(
                     context,
                     reminderViewModel,
-                    reminderUpdated
+                    reminderUpdated,
+                    showAllReminders
                 )
                 Spacer(modifier = Modifier
                     .padding(bottom = 20.dp)
@@ -95,7 +99,8 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
 private fun ReminderList(
     context: Context,
     reminderViewModel: ReminderViewModel,
-    reminderUpdated: MutableState<Boolean>
+    reminderUpdated: MutableState<Boolean>,
+    showAllReminders: Boolean
 ) {
 
     val reminderViewState by reminderViewModel.reminders.collectAsState()
@@ -103,7 +108,7 @@ private fun ReminderList(
         is ReminderViewState.Loading -> {}
         is ReminderViewState.Success -> {
             val reminderList = (reminderViewState as ReminderViewState.Success).data
-            println("Found reminders: $reminderList")  // debug
+            Log.d("REMINDERS", "Found reminders: $reminderList")
 
             LazyColumn(
                 contentPadding = PaddingValues(),
@@ -115,6 +120,7 @@ private fun ReminderList(
                         viewModel = reminderViewModel,
                         context = context,
                         reminderUpdated = reminderUpdated,
+                        showAllReminders = showAllReminders
                     )
                 }
             }
@@ -127,32 +133,37 @@ private fun ReminderListItem(
     reminder: Reminder,
     viewModel: ReminderViewModel,
     context: Context,
-    reminderUpdated: MutableState<Boolean>
+    reminderUpdated: MutableState<Boolean>,
+    showAllReminders: Boolean
 ) {
     var isEditingReminder by remember { mutableStateOf(false) }
 
-    Button(
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color(100, 75, 100),
-            contentColor = Color(255, 255, 255)),
-        onClick = { isEditingReminder = true },
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth()
-            .size(55.dp)
-    ) {
-        Text(reminder.message)
-    }
+    if ((!reminder.reminderSeen && reminder.reminderTime < LocalDateTime.now())
+        || showAllReminders) {
+        Button(
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(100, 75, 100),
+                contentColor = Color(255, 255, 255)
+            ),
+            onClick = { isEditingReminder = true },
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .size(55.dp)
+        ) {
+            Text(reminder.message)
+        }
 
-    if (isEditingReminder) {
-        EditOrDeleteReminder(
-            viewModel = viewModel,
-            context = context,
-            reminder = reminder,
-            onBack = {
-                isEditingReminder = false
-                reminderUpdated.value = !reminderUpdated.value
-            }
-        )
+        if (isEditingReminder) {
+            EditOrDeleteReminder(
+                viewModel = viewModel,
+                context = context,
+                reminder = reminder,
+                onBack = {
+                    isEditingReminder = false
+                    reminderUpdated.value = !reminderUpdated.value
+                }
+            )
+        }
     }
 }
