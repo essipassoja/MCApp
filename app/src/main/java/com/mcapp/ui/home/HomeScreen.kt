@@ -26,7 +26,7 @@ import java.time.LocalDateTime
 fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: MutableState<Boolean>) {
     val appStatus: AppStatus = get()
     val creatorId: Long = 0
-    val showAllReminders by remember { mutableStateOf(false) }
+    var showAllReminders by remember { mutableStateOf(false) }
     var isMakingNewReminder by remember { mutableStateOf(false) }
     val reminderUpdated = remember { mutableStateOf(false) }
     LaunchedEffect(reminderUpdated.value) {
@@ -59,6 +59,20 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                 Spacer(modifier = Modifier
                     .padding(bottom = 20.dp)
                     .height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        onClick = { showAllReminders = !showAllReminders },
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                    ) {
+                        Text(
+                            text = if (showAllReminders) "Hide unnotified reminders" else "Show all reminders"
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier
                     .padding(top = 20.dp)
                     .height(10.dp))
