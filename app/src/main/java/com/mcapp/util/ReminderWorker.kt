@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.mcapp.data.entity.Reminder
+import com.mcapp.ui.MainActivity
 import com.mcapp.ui.reminder.ReminderViewModel
 import org.koin.java.KoinJavaComponent.getKoin
 import java.time.ZoneId
@@ -42,38 +43,20 @@ class ReminderWorker(
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("INSIDE FUN", "Inside onReceive!")
-        val reminderId = intent?.getLongExtra("reminderId", 0) ?: 0
         val notificationId = intent?.getIntExtra("notificationId", -1) ?: -1
 
-        Log.d("REMINDER ID", "$reminderId")
         Log.d("NOTIFICATION ID", "$notificationId")
 
-        if (reminderId != 0L && notificationId != -1) {
-            val viewModel = getKoin().get<ReminderViewModel>()
-            viewModel.getReminder(reminderId) { reminder ->
-                reminder?.let {
-                    Log.d("REMINDER IT", "$it")
-                    if (!it.reminderSeen) {
-                        it.reminderSeen = true
-                        updateReminderInDatabase(viewModel, it)
-                    }
-                }
-            }
+        if (notificationId != -1) {
+            val homeIntent = Intent(context, MainActivity::class.java)
+            homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context?.startActivity(homeIntent)
 
             // Remove the notification
             val notificationManager =
                 context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.cancel(notificationId)
         }
-    }
-
-    private fun updateReminderInDatabase(
-        viewModel: ReminderViewModel,
-        reminder: Reminder
-    ) {
-        Log.d("UPDATED REMINDER", "$reminder")
-        viewModel.insertOrUpdateReminder(reminder)
     }
 }
 
@@ -118,7 +101,6 @@ fun createNotification(context: Context, reminder: Reminder, notificationId: Int
 
     // Create an intent that will be triggered when the user taps on the notification
     val intent = Intent(context, NotificationReceiver::class.java).apply {
-        putExtra("reminderId", reminder.reminderId)
         putExtra("notificationId", notificationId)
     }
     val pendingIntent = PendingIntent.getBroadcast(
