@@ -3,6 +3,9 @@ package com.mcapp.ui.reminder
 import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,32 +23,41 @@ fun EditOrDeleteReminder(
     reminder: Reminder,
     onBack: () -> Unit) {
 
+    // Initialize Reminder variables with known reminder information
     val message = remember { mutableStateOf(reminder.message) }
-    val reminderTime = remember { mutableStateOf(reminder.reminderTime) }
+    val reminderTimes = remember { mutableStateOf(reminder.reminderTimes) }
+
+    // Initialize date and time pickers
     var isChoosingDate by remember { mutableStateOf(false) }
     var isChoosingTime by remember { mutableStateOf(false) }
 
+    // Define date and time formatters
     val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     if (isChoosingDate) {
         DatePickerDialog(
-            selectedDate = reminderTime.value.toLocalDate(),
+            selectedDate = reminderTimes.value.last().toLocalDate(),
             onDateChange = { date ->
-                reminderTime.value = LocalDateTime.of(date, reminderTime.value.toLocalTime())
+                reminderTimes.value = reminderTimes.value.toMutableList().apply {
+                    set(lastIndex, LocalDateTime.of(date, reminderTimes.value.last().toLocalTime()))
+                }
             },
             onBack = { isChoosingDate = false }
         )
     }
     if (isChoosingTime) {
         TimePickerDialog(
-            selectedTime = reminderTime.value.toLocalTime(),
+            selectedTime = reminderTimes.value.last().toLocalTime(),
             onTimeChange = { time ->
-                reminderTime.value = LocalDateTime.of(reminderTime.value.toLocalDate(), time)
+                reminderTimes.value = reminderTimes.value.toMutableList().apply {
+                    set(lastIndex, LocalDateTime.of(reminderTimes.value.last().toLocalDate(), time))
+                }
             },
             onBack = { isChoosingTime = false }
         )
-    } else {
+    }
+    else {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
@@ -65,21 +77,51 @@ fun EditOrDeleteReminder(
                     .height(10.dp)
             )
             Text(text = "Reminder time:")
-            TextButton(
-                onClick = {
-                    isChoosingDate = true
-                },
-                modifier = Modifier.padding(2.dp)
-            ) {
-                Text(text = reminderTime.value.format(dateFormatter))
+            reminderTimes.value.forEachIndexed { index, time ->
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    TextButton(
+                        onClick = { isChoosingDate = true },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Text(text = time.format(dateFormatter))
+                    }
+                    TextButton(
+                        onClick = { isChoosingTime = true },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Text(text = time.format(timeFormatter))
+                    }
+                    IconButton(
+                        onClick = {
+                            reminderTimes.value = reminderTimes.value.toMutableList().apply {
+                                removeAt(index)
+                            }
+                        },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete reminder time"
+                        )
+                    }
+                }
             }
-            TextButton(
+            IconButton(
                 onClick = {
-                    isChoosingTime = true
+                    reminderTimes.value = reminderTimes.value.toMutableList().apply {
+                        add(LocalDateTime.now())
+                    }
                 },
                 modifier = Modifier.padding(2.dp)
             ) {
-                Text(text = reminderTime.value.format(timeFormatter))
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add reminder time"
+                )
             }
             Spacer(
                 modifier = Modifier
@@ -89,9 +131,9 @@ fun EditOrDeleteReminder(
             val editedReminder = Reminder(
                 reminderId = reminder.reminderId,
                 message = message.value,
-                locationX = 0,
-                locationY = 0,
-                reminderTime = reminderTime.value,
+                locationX = reminder.locationX,
+                locationY = reminder.locationY,
+                reminderTimes = reminderTimes.value,
                 creationTime = reminder.creationTime,
                 creatorId = reminder.creatorId,
                 reminderSeen = false

@@ -17,7 +17,7 @@ data class ReminderEntity(
     val message: String,
     val locationX: Long,
     val locationY: Long,
-    val reminderTime: LocalDateTime,
+    val reminderTimes: List<LocalDateTime> = emptyList(),
     val creationTime: LocalDateTime,
     val creatorId: Long,
     val reminderSeen: Boolean,

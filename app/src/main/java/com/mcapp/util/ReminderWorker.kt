@@ -65,24 +65,26 @@ fun makeReminderRequest(
     reminder: Reminder,
 ) {
     val timeZone = ZoneId.systemDefault()
-    val zonedDateTime = reminder.reminderTime.atZone(timeZone)
-    val reminderTimeInMillis = zonedDateTime.toInstant().toEpochMilli()
+    val notificationIds = List(reminder.reminderTimes.size) { Random().nextInt() }
 
-    val now = Calendar.getInstance().timeInMillis
-    val delay = reminderTimeInMillis - now
+    for ((index, reminderTime) in reminder.reminderTimes.withIndex()) {
+        val zonedDateTime = reminderTime.atZone(timeZone)
+        val reminderTimeInMillis = zonedDateTime.toInstant().toEpochMilli()
 
-    val notificationId: Int = Random().nextInt()
+        val now = Calendar.getInstance().timeInMillis
+        val delay = reminderTimeInMillis - now
 
-    val reminderRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
-        .setInputData(Data.Builder()
-            .putLong("reminderId", reminder.reminderId)
-            .putInt("notificationId", notificationId)
+        val reminderRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
+            .setInputData(Data.Builder()
+                .putLong("reminderId", reminder.reminderId)
+                .putInt("notificationId", notificationIds[index])
+                .build()
+            )
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
             .build()
-        )
-        .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-        .build()
 
-    WorkManager.getInstance(context).enqueue(reminderRequest)
+        WorkManager.getInstance(context).enqueue(reminderRequest)
+    }
 }
 
 @SuppressLint("LaunchActivityFromNotification", "UnspecifiedImmutableFlag")

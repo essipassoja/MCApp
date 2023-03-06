@@ -38,7 +38,7 @@ class ReminderDataSourceImpl constructor(private val reminderDao: ReminderDao) :
             message = message,
             locationX = locationX,
             locationY = locationY,
-            reminderTime = reminderTime,
+            reminderTimes = reminderTimes,
             creationTime = creationTime,
             creatorId = creatorId,
             reminderSeen = reminderSeen
@@ -51,7 +51,7 @@ class ReminderDataSourceImpl constructor(private val reminderDao: ReminderDao) :
             message = message,
             locationX = locationX,
             locationY = locationY,
-            reminderTime = reminderTime,
+            reminderTimes = reminderTimes,
             creationTime = creationTime,
             creatorId = creatorId,
             reminderSeen = reminderSeen

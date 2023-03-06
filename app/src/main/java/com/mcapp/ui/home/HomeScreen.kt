@@ -152,8 +152,9 @@ private fun ReminderListItem(
 ) {
     var isEditingReminder by remember { mutableStateOf(false) }
 
-    if ((!reminder.reminderSeen && reminder.reminderTime < LocalDateTime.now())
-        || showAllReminders) {
+    if ((!reminder.reminderSeen && reminder.reminderTimes.firstOrNull {
+            !it.isBefore(LocalDateTime.now()) } != null) || showAllReminders)
+    {
         Button(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color(100, 75, 100),
