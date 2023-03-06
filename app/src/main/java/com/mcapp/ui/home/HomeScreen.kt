@@ -152,8 +152,8 @@ private fun ReminderListItem(
 ) {
     var isEditingReminder by remember { mutableStateOf(false) }
 
-    if ((!reminder.reminderSeen && reminder.reminderTimes.firstOrNull {
-            !it.isBefore(LocalDateTime.now()) } != null) || showAllReminders)
+    if ((!reminder.reminderSeen && reminderShouldBeVisible(reminder))
+        || showAllReminders)
     {
         Button(
             colors = ButtonDefaults.buttonColors(
@@ -181,4 +181,17 @@ private fun ReminderListItem(
             )
         }
     }
+}
+
+@Composable
+private fun reminderShouldBeVisible(reminder: Reminder): Boolean {
+    if (reminder.reminderTimes.isEmpty()) {
+        return true
+    }
+    for (reminderTime in reminder.reminderTimes) {
+        if (reminderTime < LocalDateTime.now()) {
+            return true
+        }
+    }
+    return false
 }
