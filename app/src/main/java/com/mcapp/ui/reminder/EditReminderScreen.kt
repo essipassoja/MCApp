@@ -36,26 +36,30 @@ fun EditOrDeleteReminder(
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     if (isChoosingDate) {
-        DatePickerDialog(
-            selectedDate = reminderTimes.value.last().toLocalDate(),
-            onDateChange = { date ->
-                reminderTimes.value = reminderTimes.value.toMutableList().apply {
-                    set(lastIndex, LocalDateTime.of(date, reminderTimes.value.last().toLocalTime()))
-                }
-            },
-            onBack = { isChoosingDate = false }
-        )
+        reminderTimes.value?.last()?.let {
+            DatePickerDialog(
+                selectedDate = it.toLocalDate(),
+                onDateChange = { date ->
+                    reminderTimes.value = reminderTimes.value!!.toMutableList().apply {
+                        set(lastIndex, LocalDateTime.of(date, reminderTimes.value!!.last().toLocalTime()))
+                    }
+                },
+                onBack = { isChoosingDate = false }
+            )
+        }
     }
     if (isChoosingTime) {
-        TimePickerDialog(
-            selectedTime = reminderTimes.value.last().toLocalTime(),
-            onTimeChange = { time ->
-                reminderTimes.value = reminderTimes.value.toMutableList().apply {
-                    set(lastIndex, LocalDateTime.of(reminderTimes.value.last().toLocalDate(), time))
-                }
-            },
-            onBack = { isChoosingTime = false }
-        )
+        reminderTimes.value?.last()?.let {
+            TimePickerDialog(
+                selectedTime = it.toLocalTime(),
+                onTimeChange = { time ->
+                    reminderTimes.value = reminderTimes.value!!.toMutableList().apply {
+                        set(lastIndex, LocalDateTime.of(reminderTimes.value!!.last().toLocalDate(), time))
+                    }
+                },
+                onBack = { isChoosingTime = false }
+            )
+        }
     }
     else {
         Column(
@@ -77,7 +81,7 @@ fun EditOrDeleteReminder(
                     .height(10.dp)
             )
             Text(text = "New notification:")
-            reminderTimes.value.forEachIndexed { index, time ->
+            reminderTimes.value?.forEachIndexed { index, time ->
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
@@ -97,7 +101,7 @@ fun EditOrDeleteReminder(
                     }
                     IconButton(
                         onClick = {
-                            reminderTimes.value = reminderTimes.value.toMutableList().apply {
+                            reminderTimes.value = reminderTimes.value!!.toMutableList().apply {
                                 removeAt(index)
                             }
                         },
@@ -112,7 +116,7 @@ fun EditOrDeleteReminder(
             }
             IconButton(
                 onClick = {
-                    reminderTimes.value = reminderTimes.value.toMutableList().apply {
+                    reminderTimes.value = reminderTimes.value?.toMutableList()?.apply {
                         add(LocalDateTime.now())
                     }
                 },

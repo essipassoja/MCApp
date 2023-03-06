@@ -185,10 +185,10 @@ private fun ReminderListItem(
 
 @Composable
 private fun reminderShouldBeVisible(reminder: Reminder): Boolean {
-    if (reminder.reminderTimes.isEmpty()) {
+    if (reminder.reminderTimes?.isEmpty() == true) {
         return true
     }
-    for (reminderTime in reminder.reminderTimes) {
+    for (reminderTime in reminder.reminderTimes!!) {
         if (reminderTime < LocalDateTime.now()) {
             return true
         }

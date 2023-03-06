@@ -154,7 +154,7 @@ fun MakeNewReminder(
                     // is given, makeReminderRequest is not executed.
                     viewModel.getNewestReminder { reminder ->
                         reminder?.let {
-                            if (reminder.reminderTimes.isNotEmpty()) {
+                            if (reminder.reminderTimes?.isNotEmpty() == true) {
                                 makeReminderRequest(context, reminder)
                                 Log.d("NEW REMINDER", "Making notification for the reminder $reminder")
                             }

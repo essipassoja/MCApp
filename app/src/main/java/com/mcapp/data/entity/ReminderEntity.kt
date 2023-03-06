@@ -17,8 +17,15 @@ data class ReminderEntity(
     val message: String,
     val locationX: Long,
     val locationY: Long,
-    val reminderTimes: List<LocalDateTime> = emptyList(),
+    var reminderTimes: List<LocalDateTime>?= null,
     val creationTime: LocalDateTime,
     val creatorId: Long,
     val reminderSeen: Boolean,
-)
+) {
+    init {
+        // Check if reminderTimes is null and assign an empty list if so
+        if (reminderTimes == null) {
+            this.reminderTimes = emptyList()
+        }
+    }
+}

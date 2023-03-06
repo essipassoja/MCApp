@@ -65,9 +65,9 @@ fun makeReminderRequest(
     reminder: Reminder,
 ) {
     val timeZone = ZoneId.systemDefault()
-    val notificationIds = List(reminder.reminderTimes.size) { Random().nextInt() }
+    val notificationIds = reminder.reminderTimes?.let { List(it.size) { Random().nextInt() } }
 
-    for ((index, reminderTime) in reminder.reminderTimes.withIndex()) {
+    for ((index, reminderTime) in reminder.reminderTimes?.withIndex()!!) {
         val zonedDateTime = reminderTime.atZone(timeZone)
         val reminderTimeInMillis = zonedDateTime.toInstant().toEpochMilli()
 
@@ -77,7 +77,7 @@ fun makeReminderRequest(
         val reminderRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
             .setInputData(Data.Builder()
                 .putLong("reminderId", reminder.reminderId)
-                .putInt("notificationId", notificationIds[index])
+                .putInt("notificationId", notificationIds?.get(index) ?: 1)
                 .build()
             )
             .setInitialDelay(delay, TimeUnit.MILLISECONDS)
