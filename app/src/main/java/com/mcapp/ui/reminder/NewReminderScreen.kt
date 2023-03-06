@@ -77,7 +77,7 @@ fun MakeNewReminder(
                     .padding(2.dp)
                     .height(10.dp)
             )
-            Text(text = "Set a notification:")
+            Text(text = "New notification:")
             Spacer(
                 modifier = Modifier
                     .padding(2.dp)
@@ -111,7 +111,7 @@ fun MakeNewReminder(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete reminder time"
+                            contentDescription = "Delete notification"
                         )
                     }
                 }
@@ -126,7 +126,7 @@ fun MakeNewReminder(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add reminder time"
+                    contentDescription = "Add notification"
                 )
             }
             Spacer(

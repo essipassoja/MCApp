@@ -76,7 +76,7 @@ fun EditOrDeleteReminder(
                     .padding(2.dp)
                     .height(10.dp)
             )
-            Text(text = "Reminder time:")
+            Text(text = "New notification:")
             reminderTimes.value.forEachIndexed { index, time ->
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -105,7 +105,7 @@ fun EditOrDeleteReminder(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete reminder time"
+                            contentDescription = "Delete notification"
                         )
                     }
                 }
@@ -120,7 +120,7 @@ fun EditOrDeleteReminder(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add reminder time"
+                    contentDescription = "Add notification"
                 )
             }
             Spacer(
