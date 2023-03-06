@@ -60,12 +60,13 @@ class NotificationReceiver : BroadcastReceiver() {
     }
 }
 
-fun makeReminderRequest(
+fun makeNewNotification(
     context: Context,
     reminder: Reminder,
 ) {
     val timeZone = ZoneId.systemDefault()
     val notificationIds = reminder.reminderTimes?.let { List(it.size) { Random().nextInt() } }
+    Log.d("IDs", "Notification IDs: $notificationIds")
 
     for ((index, reminderTime) in reminder.reminderTimes?.withIndex()!!) {
         val zonedDateTime = reminderTime.atZone(timeZone)
@@ -84,6 +85,24 @@ fun makeReminderRequest(
             .build()
 
         WorkManager.getInstance(context).enqueue(reminderRequest)
+    }
+}
+
+fun updateNotification(context: Context, reminder: Reminder) {
+    // Cancel existing notifications associated with the reminder ID
+    deleteNotification(context, reminder)
+
+    // Schedule new notifications for the updated reminder
+    makeNewNotification(context, reminder)
+}
+
+fun deleteNotification(context: Context, reminder: Reminder) {
+    // Cancel existing notifications associated with the reminder ID
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val notificationIDs = reminder.reminderTimes?.let { it -> List(it.size) { it.hashCode() } }
+    Log.d("IDs", "$notificationIDs")
+    for (notificationId in notificationIDs!!) {
+        notificationManager.cancel(notificationId)
     }
 }
 

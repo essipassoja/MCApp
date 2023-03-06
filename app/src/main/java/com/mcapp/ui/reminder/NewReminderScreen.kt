@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
-import com.mcapp.util.makeReminderRequest
+import com.mcapp.util.makeNewNotification
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -155,7 +155,7 @@ fun MakeNewReminder(
                     viewModel.getNewestReminder { reminder ->
                         reminder?.let {
                             if (reminder.reminderTimes?.isNotEmpty() == true) {
-                                makeReminderRequest(context, reminder)
+                                makeNewNotification(context, reminder)
                                 Log.d("NEW REMINDER", "Making notification for the reminder $reminder")
                             }
                         }

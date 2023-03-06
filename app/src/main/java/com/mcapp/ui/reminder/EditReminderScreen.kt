@@ -12,7 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
-import com.mcapp.util.makeReminderRequest
+import com.mcapp.util.deleteNotification
+import com.mcapp.util.updateNotification
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -149,7 +150,7 @@ fun EditOrDeleteReminder(
                 ),
                 onClick = {
                     viewModel.insertOrUpdateReminder(editedReminder)
-                    makeReminderRequest(context, editedReminder)
+                    updateNotification(context, editedReminder)
                     onBack()
                 },
                 modifier = Modifier
@@ -177,6 +178,7 @@ fun EditOrDeleteReminder(
                 ),
                 onClick = {
                     viewModel.deleteReminder(reminder)
+                    deleteNotification(context, reminder)
                     onBack()
                 },
                 modifier = Modifier
