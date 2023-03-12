@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'org.jetbrains.kotlin.android'// needed for room to work
+    id "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"  // needed for Google Maps
 }
 
 android {
