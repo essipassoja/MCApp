@@ -1,5 +1,6 @@
 package com.mcapp.ui.reminder
 
+import ReminderLocation
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -24,8 +25,8 @@ fun MakeNewReminder(
 
     // Initialize Reminder variables
     val message = remember { mutableStateOf("") }
-    val locationX = remember { mutableStateOf(0L) }
-    val locationY = remember { mutableStateOf(0L) }
+    val locationX = remember { mutableStateOf(0.0) }
+    val locationY = remember { mutableStateOf(0.0) }
     val reminderTimes = remember { mutableStateOf(listOf(LocalDateTime.now())) }
 
     // Initialize date and time pickers
@@ -35,6 +36,9 @@ fun MakeNewReminder(
     // Define date and time formatters
     val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+    // Initialize location picker
+    var isChoosingLocation by remember { mutableStateOf(false) }
 
     if (isChoosingDate) {
         DatePickerDialog(
@@ -56,6 +60,15 @@ fun MakeNewReminder(
                 }
             },
             onBack = { isChoosingTime = false }
+        )
+    }
+    if (isChoosingLocation) {
+        ReminderLocation(
+            onBack = { selectedLocation ->
+                locationX.value = selectedLocation.latitude
+                locationY.value = selectedLocation.longitude
+                isChoosingLocation = false
+            }
         )
     }
     else {
@@ -115,6 +128,12 @@ fun MakeNewReminder(
                         )
                     }
                 }
+            }
+            TextButton(
+                onClick = { isChoosingLocation = true },
+                modifier = Modifier.padding(2.dp)
+            ) {
+                Text("Pick location on the map.")
             }
             IconButton(
                 onClick = {

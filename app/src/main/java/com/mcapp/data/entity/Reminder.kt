@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 data class Reminder(
     val reminderId: Long = 0,
     val message: String,
-    val locationX: Long,
-    val locationY: Long,
+    val locationX: Double,
+    val locationY: Double,
     val reminderTimes: List<LocalDateTime>?= null,
     val creationTime: LocalDateTime,
     val creatorId: Long,
