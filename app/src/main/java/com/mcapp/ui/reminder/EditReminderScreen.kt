@@ -1,5 +1,6 @@
 package com.mcapp.ui.reminder
 
+import ReminderLocation
 import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.mcapp.data.entity.Reminder
 import com.mcapp.util.deleteNotification
 import com.mcapp.util.updateNotification
@@ -26,6 +28,8 @@ fun EditOrDeleteReminder(
 
     // Initialize Reminder variables with known reminder information
     val message = remember { mutableStateOf(reminder.message) }
+    val locationX = remember { mutableStateOf(reminder.locationX) }
+    val locationY = remember { mutableStateOf(reminder.locationY) }
     val reminderTimes = remember { mutableStateOf(reminder.reminderTimes) }
 
     // Initialize date and time pickers
@@ -35,6 +39,9 @@ fun EditOrDeleteReminder(
     // Define date and time formatters
     val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+    // Initialize location picker
+    var isChoosingLocation by remember { mutableStateOf(false) }
 
     if (isChoosingDate) {
         reminderTimes.value?.last()?.let {
@@ -59,6 +66,17 @@ fun EditOrDeleteReminder(
                     }
                 },
                 onBack = { isChoosingTime = false }
+            )
+        }
+    }
+    if (isChoosingLocation) {
+        Dialog(onDismissRequest = { isChoosingLocation = false }) {
+            ReminderLocation(
+                onBack = {
+                    locationX.value = it.latitude
+                    locationY.value = it.longitude
+                    isChoosingLocation = false
+                }
             )
         }
     }
@@ -133,6 +151,51 @@ fun EditOrDeleteReminder(
                     .padding(2.dp)
                     .height(10.dp)
             )
+            Text(text = "Add a location for the reminder (Optional):")
+            Spacer(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .height(10.dp)
+            )
+            if (locationX.value == null) {
+                IconButton(
+                    onClick = {
+                        isChoosingLocation = true
+                    },
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add location based notification"
+                    )
+                }
+            }
+            else {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    TextButton(
+                        onClick = { isChoosingLocation = true },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Text("${locationX.value} ${locationY.value}")
+                    }
+                    IconButton(
+                        onClick = {
+                            locationX.value = null
+                            locationY.value = null
+                        },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete location based notification"
+                        )
+                    }
+                }
+            }
             val editedReminder = Reminder(
                 reminderId = reminder.reminderId,
                 message = message.value,
