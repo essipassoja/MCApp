@@ -31,7 +31,7 @@ fun ReminderLocation(onBack: (LatLng) -> Unit) {
                     10f
                 )
             )
-            setMapLongClick(map, selectedLocation, locationSelected)
+            setMapClick(map, selectedLocation, locationSelected)
         }
     }
 
@@ -40,12 +40,12 @@ fun ReminderLocation(onBack: (LatLng) -> Unit) {
     }
 }
 
-private fun setMapLongClick(
+private fun setMapClick(
     map: GoogleMap,
     selectedLocation: MutableState<LatLng>,
     locationSelected: MutableState<Boolean>
 ) {
-    map.setOnMapLongClickListener { lat_lng ->
+    map.setOnMapClickListener { lat_lng ->
         val snippet = String.format(
             Locale.getDefault(),
             "Lat: %1$.2f, Lng: %2$.2f",
