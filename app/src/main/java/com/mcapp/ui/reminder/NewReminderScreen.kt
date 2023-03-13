@@ -25,8 +25,8 @@ fun MakeNewReminder(
 
     // Initialize Reminder variables
     val message = remember { mutableStateOf("") }
-    val locationX = remember { mutableStateOf(0.0) }
-    val locationY = remember { mutableStateOf(0.0) }
+    val locationX = remember { mutableStateOf<Double?>(null) }
+    val locationY = remember { mutableStateOf<Double?>(null) }
     val reminderTimes = remember { mutableStateOf(listOf(LocalDateTime.now())) }
 
     // Initialize date and time pickers
@@ -129,12 +129,6 @@ fun MakeNewReminder(
                     }
                 }
             }
-            TextButton(
-                onClick = { isChoosingLocation = true },
-                modifier = Modifier.padding(2.dp)
-            ) {
-                Text("Pick location on the map.")
-            }
             IconButton(
                 onClick = {
                     reminderTimes.value = reminderTimes.value.toMutableList().apply {
@@ -153,6 +147,56 @@ fun MakeNewReminder(
                     .padding(2.dp)
                     .height(10.dp)
             )
+            Spacer(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .height(10.dp)
+            )
+            Text(text = "Add a location for the reminder (Optional):")
+            Spacer(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .height(10.dp)
+            )
+            if (locationX.value == null) {
+                IconButton(
+                    onClick = {
+                        isChoosingLocation = true
+                    },
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add location based notification"
+                    )
+                }
+            }
+            else {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    TextButton(
+                        onClick = { isChoosingLocation = true },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Text("${locationX.value} ${locationY.value}")
+                    }
+                    IconButton(
+                        onClick = {
+                            locationX.value = null
+                            locationY.value = null
+                        },
+                        modifier = Modifier.padding(2.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete location based notification"
+                        )
+                    }
+                }
+            }
             val newReminder = Reminder(
                 message = message.value,
                 locationX = locationX.value,

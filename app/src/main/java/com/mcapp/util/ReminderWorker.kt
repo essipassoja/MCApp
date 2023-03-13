@@ -7,7 +7,9 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.mcapp.data.entity.Reminder
@@ -23,6 +25,7 @@ class ReminderWorker(
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun doWork(): Result {
         val viewModel = getKoin().get<ReminderViewModel>()
         val reminderId = inputData.getLong("reminderId", 0)
@@ -106,6 +109,7 @@ fun deleteNotification(context: Context, reminder: Reminder) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.S)
 @SuppressLint("LaunchActivityFromNotification", "UnspecifiedImmutableFlag")
 fun createNotification(context: Context, reminder: Reminder, notificationId: Int) {
     val channelId = "default_channel_id"
@@ -125,7 +129,8 @@ fun createNotification(context: Context, reminder: Reminder, notificationId: Int
         putExtra("notificationId", notificationId)
     }
     val pendingIntent = PendingIntent.getBroadcast(
-        context, reminder.reminderId.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT
+        context, reminder.reminderId.toInt(), intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
     )
 
     // Create the notification
