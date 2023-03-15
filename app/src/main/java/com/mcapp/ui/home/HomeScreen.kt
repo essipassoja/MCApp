@@ -14,10 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mcapp.data.entity.Reminder
-import com.mcapp.ui.reminder.EditOrDeleteReminder
-import com.mcapp.ui.reminder.MakeNewReminder
-import com.mcapp.ui.reminder.ReminderViewModel
-import com.mcapp.ui.reminder.ReminderViewState
+import com.mcapp.ui.reminder.*
 import com.mcapp.util.AppStatus
 import org.koin.androidx.compose.get
 import java.time.LocalDateTime
@@ -26,9 +23,12 @@ import java.time.LocalDateTime
 fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: MutableState<Boolean>) {
     val appStatus: AppStatus = get()
     val creatorId: Long = 0
+
     var showAllReminders by remember { mutableStateOf(false) }
     var isMakingNewReminder by remember { mutableStateOf(false) }
+    var isSettingLocation by remember { mutableStateOf(false) }
     val reminderUpdated = remember { mutableStateOf(false) }
+
     LaunchedEffect(reminderUpdated.value) {
         reminderViewModel.getListOfAllReminders(creatorId)
     }
@@ -40,7 +40,11 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
             onBack = { isMakingNewReminder = false
                        reminderUpdated.value = false}
         )
-    } else {
+    } else if (isSettingLocation) {
+        SelectLocationAndFindNearbyReminders(
+            onBack = { isSettingLocation = false })
+    }
+    else {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
@@ -72,6 +76,21 @@ fun Home(reminderViewModel: ReminderViewModel, context: Context, isAuth: Mutable
                             text = if (showAllReminders) "Hide unnotified reminders" else "Show all reminders"
                         )
                     }
+                }
+                Spacer(modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(10.dp))
+                Button(
+                    onClick = {
+                        isSettingLocation = true
+                    },
+                    enabled = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(45.dp),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(text = "Get reminders near a location")
                 }
                 Spacer(modifier = Modifier
                     .padding(top = 20.dp)

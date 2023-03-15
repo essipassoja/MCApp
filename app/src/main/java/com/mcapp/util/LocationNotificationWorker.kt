@@ -68,21 +68,6 @@ class LocationNotificationWorker(
         return LatLng(65.06, 25.47)
     }
 
-    private fun calculateDistance(location1: LatLng, location2: LatLng): Double {
-        // Calculate distance between two locations using Haversine formula
-        val earthRadius = 6371000.0 // in meters
-        val lat1 = Math.toRadians(location1.latitude)
-        val lat2 = Math.toRadians(location2.latitude)
-        val deltaLat = Math.toRadians(location2.latitude - location1.latitude)
-        val deltaLon = Math.toRadians(location2.longitude - location1.longitude)
-        val a = sin(deltaLat / 2) * sin(deltaLat / 2) +
-                cos(lat1) * cos(lat2) *
-                sin(deltaLon / 2) * sin(deltaLon / 2)
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        return earthRadius * c
-    }
-
     @RequiresApi(Build.VERSION_CODES.S)
     private fun showNotification(reminder: Reminder) {
         val channelId = "channelId"

@@ -9,8 +9,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
 import com.mcapp.R
 import java.lang.IllegalStateException
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 @Composable
 fun rememberMapViewWithLifecycle(): MapView {
@@ -47,3 +52,18 @@ private fun rememberMapLifecycleObserver(mapView: MapView): LifecycleObserver =
             }
         }
     }
+
+fun calculateDistance(location1: LatLng, location2: LatLng): Double {
+    // Calculate distance between two locations using Haversine formula
+    val earthRadius = 6371000.0 // in meters
+    val lat1 = Math.toRadians(location1.latitude)
+    val lat2 = Math.toRadians(location2.latitude)
+    val deltaLat = Math.toRadians(location2.latitude - location1.latitude)
+    val deltaLon = Math.toRadians(location2.longitude - location1.longitude)
+    val a = sin(deltaLat / 2) * sin(deltaLat / 2) +
+            cos(lat1) * cos(lat2) *
+            sin(deltaLon / 2) * sin(deltaLon / 2)
+    val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return earthRadius * c
+}
