@@ -1,6 +1,6 @@
 package com.mcapp.ui.reminder
 
-import ReminderLocation
+import GetLocation
 import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -71,7 +71,7 @@ fun EditOrDeleteReminder(
     }
     if (isChoosingLocation) {
         Dialog(onDismissRequest = { isChoosingLocation = false }) {
-            ReminderLocation(
+            GetLocation(
                 onBack = {
                     locationX.value = it.latitude
                     locationY.value = it.longitude

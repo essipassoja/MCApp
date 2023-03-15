@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
-fun ReminderLocation(onBack: (LatLng) -> Unit) {
+fun GetLocation(onBack: (LatLng) -> Unit) {
     val mapView: MapView = rememberMapViewWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val locationSelected = remember { mutableStateOf(false) }

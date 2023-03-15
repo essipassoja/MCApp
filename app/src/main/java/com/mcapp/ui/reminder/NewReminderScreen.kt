@@ -1,6 +1,6 @@
 package com.mcapp.ui.reminder
 
-import ReminderLocation
+import GetLocation
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -63,7 +63,7 @@ fun MakeNewReminder(
         )
     }
     if (isChoosingLocation) {
-        ReminderLocation(
+        GetLocation(
             onBack = { selectedLocation ->
                 locationX.value = selectedLocation.latitude
                 locationY.value = selectedLocation.longitude

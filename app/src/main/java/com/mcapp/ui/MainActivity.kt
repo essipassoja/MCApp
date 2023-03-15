@@ -13,6 +13,7 @@ import com.mcapp.ui.home.Home
 import com.mcapp.ui.login.Login
 import com.mcapp.ui.theme.MCAppTheme
 import com.mcapp.util.KEY_AUTH
+import com.mcapp.util.LocationNotificationWorker
 import com.mcapp.util.PREFS_NAME
 import org.koin.androidx.compose.get
 
@@ -23,9 +24,16 @@ class MainActivity : AppCompatActivity() {
             MCAppTheme {
                 Surface(color = MaterialTheme.colors.background) {
                     App()
+                    LocationNotificationWorker.startPeriodicWork(this)
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        LocationNotificationWorker.cancelWork(this)
     }
 
     @Composable
