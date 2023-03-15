@@ -13,9 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.model.LatLng
 import com.mcapp.data.entity.Reminder
 import com.mcapp.ui.reminder.*
 import com.mcapp.util.AppStatus
+import com.mcapp.util.calculateDistance
+import com.mcapp.util.getCurrentLocation
 import org.koin.androidx.compose.get
 import java.time.LocalDateTime
 
@@ -204,11 +207,19 @@ private fun ReminderListItem(
 
 @Composable
 private fun reminderShouldBeVisible(reminder: Reminder): Boolean {
-    if (reminder.reminderTimes?.isEmpty() == true) {
+    val currentLocation = getCurrentLocation()
+    if (reminder.reminderTimes?.isEmpty() == true && reminder.locationX == null) {
         return true
     }
     for (reminderTime in reminder.reminderTimes!!) {
         if (reminderTime < LocalDateTime.now()) {
+            return true
+        }
+    }
+    if (reminder.locationX != null && reminder.locationY != null) {
+        if (
+            (calculateDistance(LatLng(reminder.locationX, reminder.locationY),
+                currentLocation)) < 1000) {
             return true
         }
     }

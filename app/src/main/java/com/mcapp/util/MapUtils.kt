@@ -67,3 +67,8 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Double {
 
     return earthRadius * c
 }
+
+fun getCurrentLocation(): LatLng {
+    // Set dummy location for app
+    return LatLng(65.06, 25.47)
+}

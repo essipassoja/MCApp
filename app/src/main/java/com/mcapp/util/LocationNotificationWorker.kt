@@ -63,11 +63,6 @@ class LocationNotificationWorker(
         return reminderList
     }
 
-    private fun getCurrentLocation(): LatLng {
-        // Set dummy location for app
-        return LatLng(65.06, 25.47)
-    }
-
     @RequiresApi(Build.VERSION_CODES.S)
     private fun showNotification(reminder: Reminder) {
         val channelId = "channelId"
