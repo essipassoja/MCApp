@@ -20,7 +20,7 @@ import java.time.ZoneId
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class ReminderWorker(
+class NotificationWorker(
     context: Context,
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
@@ -78,7 +78,7 @@ fun makeNewNotification(
         val now = Calendar.getInstance().timeInMillis
         val delay = reminderTimeInMillis - now
 
-        val reminderRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
+        val reminderRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
             .setInputData(Data.Builder()
                 .putLong("reminderId", reminder.reminderId)
                 .putInt("notificationId", notificationIds?.get(index) ?: 1)
